@@ -216,3 +216,56 @@ assert( fullWords ( 132 ) == List( "one","three","two" ) )
 assert( fullWords ( 1432 ) == List( "one","four","three","two" ) )
 assert( fullWords ( 4312 ) == List( "four","three","one","two" ) )
 
+def factorial (n : Int) : Int = {
+
+  if(n == 0 )
+    return 1
+
+  return n * factorial (n-1)
+}
+
+
+def lexico(i:Int,list: List[Int]): List[Int]=
+{
+
+  if(i==0)
+    return list
+
+  val fact = factorial(list.length-1)
+  val leadingdigitindex = (i-1)/fact
+  val leftover = i - leadingdigitindex * fact
+
+  if(list.length==1)
+  {
+    if(i>10)
+      throw new NoSuchElementException
+
+    else
+    {
+      return list
+    }
+
+  }
+
+  else
+  {
+
+    return List(list(leadingdigitindex)) ::: lexico(leftover,list diff List(list(leadingdigitindex)))
+  }
+}
+
+def lex(n:Int): List[Int] = {
+
+  val list = List(0,1,2,3,4,5,6,7,8,9)
+  val answer: List[Int] = lexico(n,list)
+
+  val ans =answer.foldLeft(0)((b,a) => 10*b+a)
+  return answer
+}
+
+assert(lex(1000000) == List(2,7,8,3,9,1,5,4,6,0))
+assert(lex(2) == List(0,1,2,3,4,5,6,7,9,8))
+assert(lex(100000) == List(0,3,5,8,9,2,6,4,7,1))
+assert(lex(6) == List(0,1,2,3,4,5,6,9,8,7))
+
+
